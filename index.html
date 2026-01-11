@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piyush Digital Services | Official Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root { 
+            --primary-red: #ff3e3e; 
+            --light-red: #ff5e5e; 
+            --bg-aqua: #f0f9f9; 
+            --pista-tint: #e8f5e9; 
+            --card-pista: #f1fbf1; 
+            --text-black: #111111;
+            --text-grey: #444444;
+            --sky-blue: #00b4d8; 
+            --star-gold: #ffb300;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Outfit', sans-serif; scroll-behavior: smooth; }
+        
+        body { 
+            background-color: var(--bg-aqua); 
+            color: var(--text-black); 
+            overflow-x: hidden;
+            background-image: url('https://www.transparenttextures.com/patterns/pinstripe-light.png');
+        }
+
+        nav { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 10px 8%; background: rgba(255, 255, 255, 0.95); 
+            position: fixed; width: 100%; top: 0; z-index: 1000; 
+            border-bottom: 2px solid var(--pista-tint);
+            backdrop-filter: blur(10px);
+        }
+        
+        .logo img { height: 50px; width: auto; display: block; }
+
+        .hero { 
+            height: 50vh; display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; text-align: center; margin-top: 60px; 
+            background: linear-gradient(rgba(240, 249, 249, 0.8), rgba(240, 249, 249, 0.8)), url('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2070') center/cover;
+        }
+        .hero h1 { font-size: 3.5rem; color: var(--primary-red); font-weight: 800; }
+        .hero h1 .blk { color: var(--text-black); }
+        .hero p { font-size: 1.1rem; color: var(--text-grey); margin-top: 10px; }
+
+        section { padding: 60px 8%; }
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+        
+        /* CARD ANIMATION */
+        .s-card { 
+            background: linear-gradient(135deg, #ffffff, var(--card-pista)); 
+            padding: 35px; border-radius: 15px; 
+            text-align: center; cursor: pointer; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
+            border: 1px solid #d4edda; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            position: relative;
+        }
+        
+        .s-card:hover { 
+            transform: translateY(-15px) scale(1.03); 
+            border-color: var(--primary-red); 
+            box-shadow: 0 20px 40px rgba(255, 62, 62, 0.15); 
+            background: #faffff;
+        }
+        
+        /* ICON ANIMATION */
+        .s-card i { 
+            font-size: 40px; color: var(--text-black); margin-bottom: 15px; 
+            display: block; transition: 0.6s ease;
+        }
+        
+        .s-card:hover i { 
+            color: var(--primary-red); 
+            transform: rotateY(360deg) scale(1.2); 
+        }
+        
+        .s-card h3 { font-size: 19px; color: var(--light-red); font-weight: 700; }
+
+        /* MODAL POP ANIMATION */
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); }
+        .modal-content { 
+            background: white; margin: 5% auto; padding: 40px; border-radius: 20px; 
+            width: 90%; max-width: 550px; max-height: 85vh; overflow-y: auto; 
+            position: relative; border-top: 8px solid var(--primary-red);
+            animation: modalPop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        @keyframes modalPop { 
+            from { transform: scale(0.5); opacity: 0; } 
+            to { transform: scale(1); opacity: 1; } 
+        }
+
+        .close-btn { position: absolute; right: 20px; top: 15px; font-size: 30px; cursor: pointer; color: #333; }
+        .price-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; font-weight: 600; }
+        .price-row span:first-child { color: var(--primary-red); }
+        .price-row span:last-child { color: var(--text-black); font-weight: 800; }
+        .doc-box { margin-top: 25px; background: #f0faff; padding: 20px; border-radius: 12px; border-left: 4px solid var(--sky-blue); }
+        .doc-line { color: var(--sky-blue); font-weight: 800; font-size: 15px; text-transform: uppercase; }
+
+        .marquee-container { background: transparent; padding: 30px 0; overflow-x: auto; overflow-y: hidden; margin: 10px 0; scrollbar-width: none; cursor: grab; }
+        .marquee-container:active { cursor: grabbing; }
+        .marquee-container::-webkit-scrollbar { display: none; }
+
+        .marquee-content { display: flex; gap: 30px; animation: floatText 40s linear infinite; white-space: nowrap; width: max-content; }
+        .marquee-container:hover .marquee-content { animation-play-state: paused; }
+        
+        @keyframes floatText { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        .float-card { background: white; padding: 20px 25px; border-radius: 15px; border: 1px solid #eee; display: inline-block; min-width: 320px; max-width: 350px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); white-space: normal; vertical-align: top; }
+        
+        /* HALF STAR COLOR FILL CSS */
+        .star-rating { color: var(--star-gold); font-size: 14px; margin-bottom: 5px; }
+        .fa-star-half-stroke { color: var(--star-gold); }
+
+        .rev-user { font-weight: 800; color: var(--primary-red); display: block; margin-bottom: 5px; }
+        .rev-text { font-size: 14px; color: var(--text-grey); line-height: 1.4; }
+
+        .review-section { background: white; border-radius: 20px; padding: 40px; border: 1px solid #eee; margin-bottom: 40px; }
+        
+        .btn-group { display: flex; gap: 10px; margin-top: 25px; }
+        .cta-btn { flex: 1; padding: 15px; border-radius: 12px; text-decoration: none; color: white; text-align: center; font-weight: 700; transition: 0.3s; }
+        .wa { background: #25D366; } .ml { background: var(--text-black); }
+        .cta-btn:hover { opacity: 0.9; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        footer { text-align: center; padding: 40px; color: #777; font-size: 0.9rem; border-top: 1px solid #eee; background: white; }
+        
+        @media (max-width: 768px) { .hero h1 { font-size: 2.5rem; } }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <img src="Ringtones/Logo.png" alt="Piyush Digital Services Logo">
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 data-aos="zoom-in">Piyush <span class="blk">Digital</span> Services</h1>
+        <p data-aos="fade-up" data-aos-delay="100">Fast, Reliable & Professional Digital Solutions</p>
+    </section>
+
+    <section id="services">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="font-size: 2rem; color: var(--text-black);">Our Services</h2>
+            <div style="width: 50px; height: 3px; background: var(--primary-red); margin: 10px auto;"></div>
+        </div>
+        <div class="services-grid">
+            <div class="s-card" onclick="openModal('aadhar')" data-aos="fade-up" data-aos-delay="50"><i class="fa-solid fa-fingerprint"></i><h3>Aadhaar Center</h3></div>
+            <div class="s-card" onclick="openModal('hallticket')" data-aos="fade-up" data-aos-delay="100"><i class="fa-solid fa-file-invoice"></i><h3>Hall Ticket</h3></div>
+            <div class="s-card" onclick="openModal('cash')" data-aos="fade-up" data-aos-delay="150"><i class="fa-solid fa-money-bill-transfer"></i><h3>Cash Withdrawal</h3></div>
+            <div class="s-card" onclick="openModal('passport')" data-aos="fade-up" data-aos-delay="200"><i class="fa-solid fa-passport"></i><h3>Passport Apply</h3></div>
+            <div class="s-card" onclick="openModal('pan')" data-aos="fade-up" data-aos-delay="50"><i class="fa-solid fa-id-card"></i><h3>PAN Card</h3></div>
+            <div class="s-card" onclick="openModal('eshram')" data-aos="fade-up" data-aos-delay="100"><i class="fa-solid fa-person-digging"></i><h3>E-Shram Card</h3></div>
+            <div class="s-card" onclick="openModal('train')" data-aos="fade-up" data-aos-delay="150"><i class="fa-solid fa-train"></i><h3>Train Booking</h3></div>
+            <div class="s-card" onclick="openModal('flight')" data-aos="fade-up" data-aos-delay="200"><i class="fa-solid fa-plane"></i><h3>Flight Booking</h3></div>
+            <div class="s-card" onclick="openModal('bank')" data-aos="fade-up" data-aos-delay="50"><i class="fa-solid fa-building-columns"></i><h3>Bank Account</h3></div>
+            <div class="s-card" onclick="openModal('admission')" data-aos="fade-up" data-aos-delay="100"><i class="fa-solid fa-graduation-cap"></i><h3>Admission Forms</h3></div>
+            <div class="s-card" onclick="openModal('cert')" data-aos="fade-up" data-aos-delay="150"><i class="fa-solid fa-certificate"></i><h3>Govt Certificates</h3></div>
+            <div class="s-card" onclick="openModal('photo')" data-aos="fade-up" data-aos-delay="200"><i class="fa-solid fa-camera"></i><h3>Passport Photo</h3></div>
+            <div class="s-card" onclick="openModal('bill')" data-aos="fade-up" data-aos-delay="50"><i class="fa-solid fa-receipt"></i><h3>Bill & Recharge</h3></div>
+            <div class="s-card" onclick="openModal('online')" data-aos="fade-up" data-aos-delay="100"><i class="fa-solid fa-file-signature"></i><h3>All Online Forms</h3></div>
+            <div class="s-card" onclick="openModal('voter')" data-aos="fade-up" data-aos-delay="150"><i class="fa-solid fa-address-card"></i><h3>Voter ID & DL</h3></div>
+            <div class="s-card" onclick="openModal('print')" data-aos="fade-up" data-aos-delay="200"><i class="fa-solid fa-print"></i><h3>Color Print & Lam.</h3></div>
+            <div class="s-card" onclick="openModal('gst')" data-aos="fade-up" data-aos-delay="50"><i class="fa-solid fa-file-contract"></i><h3>GST & ITR</h3></div>
+            <div class="s-card" onclick="openModal('ration')" data-aos="fade-up" data-aos-delay="100"><i class="fa-solid fa-utensils"></i><h3>Ration Card</h3></div>
+            <div class="s-card" onclick="openModal('hospital')" data-aos="fade-up" data-aos-delay="150"><i class="fa-solid fa-hospital"></i><h3>Hospital Appt.</h3></div>
+            <div class="s-card" onclick="openModal('ayushman')" data-aos="fade-up" data-aos-delay="200"><i class="fa-solid fa-id-badge"></i><h3>Ayushman Card</h3></div>
+        </div>
+    </section>
+
+    <div class="marquee-container">
+        <div class="marquee-content" id="reviewMarquee">
+            <div class="float-card">
+                <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <span class="rev-user">Rahul Kumar</span>
+                <p class="rev-text">Very professional behavior. Visited for a PAN card, work was done quickly.</p>
+            </div>
+            <div class="float-card">
+                <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i></div>
+                <span class="rev-user">Sumit Sharma</span>
+                <p class="rev-text">Train ticket confirm karwa di emergency mein. Bahut achi service.</p>
+            </div>
+            <div class="float-card">
+                <div class="star-rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <span class="rev-user">Amit Verma</span>
+                <p class="rev-text">The best part is their charges are very reasonable. Highly recommended!</p>
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <div class="review-section" data-aos="fade-up">
+            <h4 style="margin-bottom:10px;">Write a Review</h4>
+            <form id="reviewForm" action="https://formspree.io/f/piyushdigitalservices09@gmail.com" method="POST">
+                <input type="text" name="name" id="revName" placeholder="Your Name" required style="width:100%; margin-bottom:10px; padding:12px; border:1px solid #ddd; border-radius:5px;">
+                <textarea name="message" id="revMsg" placeholder="Share your experience..." required style="width:100%; padding:12px; border:1px solid #ddd; border-radius:5px; height: 80px;"></textarea>
+                <button type="submit" id="submitBtn" style="margin-top:10px; background:var(--primary-red); color:white; border:none; padding:12px 25px; border-radius:5px; cursor:pointer; font-weight: 700; width: 100%;">Submit Review</button>
+            </form>
+            <div id="formStatus" style="margin-top: 15px; text-align: center; font-weight: 600; display: none;"></div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div style="background: white; padding: 40px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee;">
+            <h3 style="margin-bottom: 15px;">Contact Us</h3>
+            <p>📍 171-A Navjeevan Camp Govindpuri, Kalka ji New Delhi-110019</p>
+            <p style="margin-top: 5px;">📞 +91 9654220705 | 8929889647</p>
+            <div class="btn-group">
+                <a href="https://wa.me/919654220705" class="cta-btn wa">WhatsApp</a>
+                <a href="mailto:piyushdigitalservices09@gmail.com" class="cta-btn ml">Email</a>
+            </div>
+        </div>
+    </section>
+
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="color:var(--text-black); margin-bottom: 20px; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px;"></h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <footer><p>© 2026 Piyush Digital Services | Your Trust, Our Priority</p></footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // AOS INITIALIZATION
+        AOS.init({ duration: 800, once: true, offset: 100 });
+
+        const marquee = document.getElementById('reviewMarquee');
+        marquee.innerHTML += marquee.innerHTML;
+
+        const slider = document.querySelector('.marquee-container');
+        let isDown = false; let startX; let scrollLeft;
+        slider.addEventListener('mousedown', (e) => { isDown = true; startX = e.pageX - slider.offsetLeft; scrollLeft = slider.scrollLeft; slider.style.cursor = 'grabbing'; });
+        slider.addEventListener('mouseleave', () => { isDown = false; });
+        slider.addEventListener('mouseup', () => { isDown = false; slider.style.cursor = 'grab'; });
+        slider.addEventListener('mousemove', (e) => { if (!isDown) return; e.preventDefault(); const x = e.pageX - slider.offsetLeft; const walk = (x - startX) * 2; slider.scrollLeft = scrollLeft - walk; });
+
+        const form = document.getElementById("reviewForm");
+        const status = document.getElementById("formStatus");
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const submitBtn = document.getElementById("submitBtn");
+            submitBtn.innerText = "Sending...";
+            submitBtn.disabled = true;
+
+            const data = new FormData(form);
+            fetch(form.action, {
+                method: "POST",
+                body: data,
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                status.style.display = "block";
+                if (response.ok) {
+                    status.innerHTML = "✅ Dhanyawad! Review humein mil gaya hai.";
+                    status.style.color = "green";
+                    form.reset();
+                } else {
+                    status.innerHTML = "❌ Error! Kripya baad mein koshish karein.";
+                    status.style.color = "red";
+                }
+                submitBtn.innerText = "Submit Review";
+                submitBtn.disabled = false;
+            }).catch(error => {
+                status.style.display = "block";
+                status.innerHTML = "❌ Connection Error!";
+                status.style.color = "red";
+                submitBtn.disabled = false;
+            });
+        };
+
+        const serviceDetails = {
+            aadhar: { title: "Aadhaar Center", rates: [["Mobile Number Update", "100/-rs"], ["Address Update", "100/-rs"], ["PVC Card Apply", "100/-rs"], ["Aadhar Center Appointment Book", "100/-rs"]], docs: "Voter ID, Electricity Bill, Rent Agreement, or Bank Passbook." },
+            hallticket: { title: "Hall Ticket", rates: [["Black & White", "5/-rs per page"], ["Color", "10/-rs per page"]], docs: "Application No. & Date of Birth." },
+            cash: { title: "Cash Withdrawal", rates: [["100 - 1000", "20/-rs"], ["1001 - 2000", "30/-rs"], ["2001 - 3000", "40/-rs"], ["3001 - 4000", "50/-rs"], ["4001 - 5000", "60/-rs"], ["Up to 50,000", "+10rs increase per 1000rs"]], docs: "Aadhaar Card & Fingerprint." },
+            passport: { title: "Passport Apply", rates: [["New Fresh (36 Pgs)", "2500/-rs"], ["New Fresh (60 Pgs)", "3000/-rs"], ["Minor (Below 18)", "1500/-rs"], ["Renewal (36 Pgs)", "2500/-rs"], ["Lost/Damaged (36 Pgs)", "4000/-rs"], ["Lost/Damaged (60 Pgs)", "4500/-rs"]], docs: "Aadhaar, PAN Card, 10th Marksheet, Address Proof." },
+            pan: { title: "PAN Card", rates: [["New (With Signature)", "250/-rs"], ["New (Fingerprint)", "300/-rs"], ["Correction/Update", "300/-rs"]], docs: "Aadhaar Card & 2 Photos." },
+            eshram: { title: "E-Shram Card", rates: [["New Apply & Correction", "200/-rs"]], docs: "Aadhaar Card & Bank Passbook." },
+            train: { title: "Train Booking", rates: [["Sleeper", "Booking + 150/-rs Per Person"], ["AC", "Booking + 200/-rs Per Person"], ["Tatkal Sleeper", "Booking + 250/-rs Per Person"], ["Tatkal AC", "Booking + 300/-rs Per Person"]], docs: "Aadhaar/PAN Card of Travellers." },
+            flight: { title: "Flight Booking", rates: [["Domestic", "Booking + 250/-rs Per Person"], ["International", "Booking + 300/-rs Per Person"]], docs: "Aadhaar Card or Passport." },
+            bank: { title: "Bank Account", rates: [["Zero Balance", "100/-rs"], ["Saving Account", "150/-rs"]], docs: "Aadhaar, PAN, Mobile linked." },
+            admission: { title: "Admission Forms", rates: [["School Admission", "Govt Fee + 200/-rs"], ["College Admission", "Govt Fee + 200/-rs"], ["Exam Fees", "Fees + 100/-rs"]], docs: "Previous Marksheets, Aadhaar, Photos." },
+            cert: { title: "Govt Certificates", rates: [["Birth/Death Cert.", "350/-rs"], ["Correction/Update", "250/-rs"], ["2yr+ Birth Cert", "1000/-rs"], ["Income (New/Renew)", "350/- / 300/-rs"], ["Caste (New/Renew)", "350/- / 300/-rs"], ["Domicile Delhi", "350/-rs"]], docs: "Aadhaar, Hospital papers, Address proof." },
+            photo: { title: "Passport Photo", rates: [["8 Photos", "30/-rs"], ["16 Photos", "55/-rs"], ["Full Page", "80/-rs"]], docs: "Instant High-Quality Print." },
+            bill: { title: "Bill & Recharge", rates: [["Electricity/Water Bill", "No Extra Charge"], ["All Mobile Recharges", "As per Plan"]], docs: "Consumer ID or Mobile Number." },
+            online: { title: "All Online Forms", rates: [["All Govt Jobs", "Govt Fee + 150/-rs"]], docs: "Educational Marksheets, Photo, Aadhaar." },
+            voter: { title: "Voter ID & DL", rates: [["New Voter ID", "200/-rs"], ["Voter Correction", "150/-rs"], ["DL/LL New Apply", "Govt Fee + 150/-rs"], ["DL Renew/Correction", "Govt Fee + 150/-rs"]], docs: "Aadhaar, Photo, DOB Proof." },
+            print: { title: "Print & Lamination", rates: [["B/W (Single/Both)", "5/- / 10/-rs"], ["Color (Single/Both)", "10/- / 20/-rs"], ["Lamination Id card", "10/-rs"], ["Lamination A4", "20/-rs"]], docs: "Quality Printing & Durable Lamination." },
+            gst: { title: "GST & ITR", rates: [["GST New Registration", "2000/-rs"], ["ITR Filing", "1500/-rs"]], docs: "PAN, Aadhaar, Photo, Cancelled Cheque." },
+            ration: { title: "Ration Card", rates: [["New Apply", "350/-rs"], ["Correction", "300/-rs"], ["Name Add/Delete", "200/-rs"], ["Head change", "300/-rs"]], docs: "Aadhaar (All members), Electricity Bill, Income proof." },
+            hospital: { title: "Hospital Appointment", rates: [["Doctor Booking", "100/-rs"]], docs: "Patient Aadhaar Card." },
+            ayushman: { title: "Ayushman Card", rates: [["New Apply / Download", "100/-rs"]], docs: "Aadhaar Card & Ration Card." }
+        };
+
+        function openModal(key) {
+            const data = serviceDetails[key];
+            document.getElementById('modalTitle').innerHTML = data.title;
+            let listHtml = '';
+            data.rates.forEach(r => { listHtml += `<div class="price-row"><span>${r[0]}</span><span>${r[1]}</span></div>`; });
+            let docHtml = `<div class="doc-box"><p class="doc-line">NOTED: ${data.docs}</p></div>`;
+            document.getElementById('modalBody').innerHTML = listHtml + docHtml;
+            document.getElementById('serviceModal').style.display = 'block';
+        }
+        function closeModal() { document.getElementById('serviceModal').style.display = 'none'; }
+        window.onclick = (e) => { if(e.target == document.getElementById('serviceModal')) closeModal(); }
+    </script>
+</body>
+</html>
